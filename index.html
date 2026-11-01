@@ -4,58 +4,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rafa Montenegro</title>
+<title>Rafa Montenegro — DJ</title>
 <style>
-body{margin:0;background:#101018;color:#f5f2ed;font-family:Arial,sans-serif;padding:24px}
-main{max-width:560px;margin:auto}
-h1{font-size:34px;margin-bottom:4px}
-.sub{color:#b7a9c9}
-.card{background:#211e2b;padding:20px;border-radius:18px;margin:18px 0}
-input{box-sizing:border-box;width:100%;padding:14px;border-radius:10px;border:0;margin:10px 0;background:#fff;color:#111;font-size:16px}
-button{border:0;border-radius:10px;padding:13px 17px;margin:5px;background:#a77bdb;color:#15111b;font-weight:bold;font-size:15px}
-button.secondary{background:#393344;color:white}
-button:disabled{opacity:.45}
-.track{padding:12px 0;border-bottom:1px solid #45404f}
-small{color:#c0b6cc}
-#status{color:#d5b7ff;line-height:1.5}
+*{box-sizing:border-box}
+body{
+ margin:0;padding:22px;
+ background:linear-gradient(145deg,#100e13,#211725);
+ color:#f8f1e8;font-family:Arial,sans-serif;
+}
+main{max-width:650px;margin:auto}
+header{text-align:center;padding:28px 10px 22px}
+h1{font-size:35px;letter-spacing:3px;margin:8px 0}
+.sub{color:#d7ae79;letter-spacing:2px;font-size:12px}
+.motto{color:#c9bdc9;font-style:italic;margin-top:14px}
+.card{
+ background:#251e29;border:1px solid #493747;
+ padding:19px;border-radius:17px;margin:17px 0;
+}
+h2{font-size:19px;margin:0 0 12px;color:#f0c48d}
+p{line-height:1.5}
+input{
+ width:100%;padding:14px;border-radius:10px;
+ border:1px solid #66516a;margin:10px 0;
+ background:#fff;color:#111;font-size:16px;
+}
+button{
+ border:0;border-radius:10px;padding:13px 16px;
+ margin:5px 4px 5px 0;background:#d49a59;
+ color:#21150e;font-weight:bold;font-size:14px;
+ cursor:pointer;
+}
+button.secondary{background:#493849;color:white}
+button:disabled{opacity:.45;cursor:default}
+#status{color:#e7bd89;line-height:1.5}
+.track{
+ padding:13px 0;border-bottom:1px solid #514052;
+ display:flex;justify-content:space-between;
+ align-items:center;gap:10px;
+}
+.track-info{min-width:0;flex:1}
+.track strong{display:block;line-height:1.35}
+.track small{color:#c5b7c7}
+.track button{white-space:nowrap}
+.tag{
+ display:inline-block;background:#493849;color:#f1c58e;
+ border-radius:20px;padding:5px 9px;font-size:11px;
+ margin:3px 0 7px;
+}
+.stage{margin-top:18px}
+.stage h3{color:#e9b978;font-size:15px}
+.note{font-size:13px;color:#c7bac8}
 </style>
 </head>
 <body>
 <main>
-<h1>RAFA MONTENEGRO</h1>
-<div class="sub">Tu asistente musical personal</div>
+
+<header>
+ <div class="sub">FUNK · DISCO · SOUL · HOUSE</div>
+ <h1>RAFA MONTENEGRO</h1>
+ <div class="motto">«Si no tiene groove, no entra en la sesión».</div>
+</header>
 
 <div class="card">
-<h3>Conexión Spotify</h3>
-<p id="status">Conectá tu cuenta para comenzar.</p>
-<button id="connect">Conectar con Spotify</button>
-<button id="logout" class="secondary">Desconectar</button>
+ <h2>La cabina de Rafa</h2>
+ <p>Un viaje musical desde el funk clásico hasta el disco y el funky house actual. Música con bajo, ritmo y energía para bailar.</p>
+ <p id="status">Conectá Spotify para empezar.</p>
+ <button id="connect">Conectar con Spotify</button>
+ <button id="logout" class="secondary">Desconectar</button>
 </div>
 
 <div class="card">
-<h3>Buscar música</h3>
-<input id="query" placeholder="Artista, canción o estilo musical">
-<button id="search">Buscar canciones</button>
-<div id="results"></div>
+ <h2>Crear una sesión mixta</h2>
+ <p class="note">Rafa buscará canciones y construirá una sesión en cuatro etapas.</p>
+ <button id="generate">Crear sesión musical</button>
+ <div id="session"></div>
+ <button id="playSession" disabled>Reproducir sesión completa</button>
 </div>
 
 <div class="card">
-<h3>Controles</h3>
-<p id="now">Todavía no consultamos qué está sonando.</p>
-<button id="refresh" class="secondary">Ver qué suena</button>
-<button id="pause" class="secondary">Pausar</button>
-<button id="next" class="secondary">Siguiente canción</button>
+ <h2>Buscar una canción</h2>
+ <input id="query" placeholder="Artista, canción o estilo musical">
+ <button id="search">Buscar canciones</button>
+ <div id="results"></div>
 </div>
+
+<div class="card">
+ <h2>Controles de Spotify</h2>
+ <p id="now">Todavía no consultamos qué está sonando.</p>
+ <button id="refresh" class="secondary">Ver qué suena</button>
+ <button id="pause" class="secondary">Pausar</button>
+ <button id="next" class="secondary">Siguiente canción</button>
+</div>
+
 </main>
 
 <script>
 const CLIENT_ID = "92732ff5d851466bb5836748075c8e45";
 const REDIRECT_URI = "https://joacolote.github.io/rafa-montenegro/";
 const SCOPES = "user-read-playback-state user-read-currently-playing user-modify-playback-state";
+
 let token = sessionStorage.getItem("rafa_token");
+let currentSession = [];
 
 const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
+const sessionEl = document.getElementById("session");
+const playSessionBtn = document.getElementById("playSession");
 
 function status(msg){statusEl.textContent=msg;}
 
@@ -94,10 +148,14 @@ async function connect(){
 async function handleCallback(){
  const params=new URLSearchParams(location.search);
  const code=params.get("code");
- if(params.get("error")){status("No se autorizó el acceso a Spotify.");return;}
+ if(params.get("error")){
+  status("No se autorizó el acceso a Spotify.");
+  return;
+ }
  if(!code)return;
  if(params.get("state")!==sessionStorage.getItem("rafa_state")){
-  status("Error de seguridad: estado inválido.");return;
+  status("Error de seguridad: estado inválido.");
+  return;
  }
  try{
   const body=new URLSearchParams({
@@ -118,7 +176,9 @@ async function handleCallback(){
   sessionStorage.setItem("rafa_token",token);
   history.replaceState({},document.title,REDIRECT_URI);
   status("¡Rafa está conectado a Spotify!");
- }catch(e){status("Error al conectar: "+e.message);}
+ }catch(e){
+  status("Error al conectar: "+e.message);
+ }
 }
 
 async function api(path,options={}){
@@ -133,7 +193,9 @@ async function api(path,options={}){
  });
  if(response.status===204)return null;
  const data=await response.json().catch(()=>({}));
- if(!response.ok)throw new Error(data.error?.message||"Error de Spotify ("+response.status+")");
+ if(!response.ok){
+  throw new Error(data.error?.message||"Error de Spotify ("+response.status+")");
+ }
  return data;
 }
 
@@ -144,63 +206,197 @@ async function search(){
  try{
   const data=await api("/search?"+new URLSearchParams({q,type:"track",limit:"10"}));
   resultsEl.innerHTML="";
-  if(!data.tracks.items.length){resultsEl.textContent="No encontré canciones.";return;}
+  if(!data.tracks.items.length){
+   resultsEl.textContent="No encontré canciones.";
+   return;
+  }
   data.tracks.items.forEach(track=>{
    const div=document.createElement("div");
    div.className="track";
+   const info=document.createElement("div");
+   info.className="track-info";
    const name=document.createElement("strong");
    name.textContent=track.name;
-   const artist=document.createElement("div");
-   artist.innerHTML="<small></small>";
-   artist.firstChild.textContent=track.artists.map(a=>a.name).join(", ");
+   const artist=document.createElement("small");
+   artist.textContent=track.artists.map(a=>a.name).join(", ");
+   info.append(name,artist);
    const btn=document.createElement("button");
    btn.textContent="Reproducir";
    btn.onclick=()=>play(track.uri);
-   div.append(name,artist,btn);
+   div.append(info,btn);
    resultsEl.append(div);
   });
- }catch(e){resultsEl.textContent=e.message;}
+ }catch(e){
+  resultsEl.textContent=e.message;
+ }
+}
+
+/* Selección musical de Rafa:
+   cada búsqueda aporta una canción a una etapa de la sesión. */
+const musicalJourney=[
+ {stage:"1. Entrar en clima — Soul y funk",queries:[
+  "artist:Stevie Wonder",
+  "artist:Marvin Gaye",
+  "artist:James Brown"
+ ]},
+ {stage:"2. Que empiece el baile — Disco clásico",queries:[
+  "artist:Chic",
+  "artist:Donna Summer",
+  "artist:Earth Wind and Fire"
+ ]},
+ {stage:"3. Subir la energía — Disco moderno",queries:[
+  "artist:Breakbot",
+  "artist:Jamiroquai",
+  "artist:Parcels"
+ ]},
+ {stage:"4. Pista encendida — Nu-disco y funky house",queries:[
+  "artist:Purple Disco Machine",
+  "artist:Folamour",
+  "artist:The Shapeshifters"
+ ]}
+];
+
+async function generateSession(){
+ if(!token){
+  status("Primero conectá Spotify.");
+  return;
+ }
+ const btn=document.getElementById("generate");
+ btn.disabled=true;
+ playSessionBtn.disabled=true;
+ currentSession=[];
+ sessionEl.innerHTML="<p>Rafa está buscando música y preparando la sesión...</p>";
+
+ try{
+  const used=new Set();
+
+  for(const group of musicalJourney){
+   const section=document.createElement("section");
+   section.className="stage";
+   const heading=document.createElement("h3");
+   heading.textContent=group.stage;
+   section.append(heading);
+
+   for(const query of group.queries){
+    const data=await api("/search?"+new URLSearchParams({
+     q:query,type:"track",limit:"5"
+    }));
+    const tracks=data.tracks.items;
+    const selected=tracks.find(t=>!used.has(t.uri));
+    if(!selected)continue;
+
+    used.add(selected.uri);
+    currentSession.push(selected);
+
+    const row=document.createElement("div");
+    row.className="track";
+    const info=document.createElement("div");
+    info.className="track-info";
+    const name=document.createElement("strong");
+    name.textContent=selected.name;
+    const artist=document.createElement("small");
+    artist.textContent=selected.artists.map(a=>a.name).join(", ");
+    info.append(name,artist);
+
+    const playBtn=document.createElement("button");
+    playBtn.textContent="▶";
+    playBtn.title="Reproducir esta canción";
+    playBtn.onclick=()=>play(selected.uri);
+
+    row.append(info,playBtn);
+    section.append(row);
+   }
+   sessionEl.append(section);
+  }
+
+  if(currentSession.length){
+   playSessionBtn.disabled=false;
+   status("Sesión preparada. Rafa encontró "+currentSession.length+" canciones.");
+  }else{
+   sessionEl.textContent="No se encontraron canciones para esta sesión.";
+  }
+ }catch(e){
+  status("No se pudo completar la sesión: "+e.message);
+ }finally{
+  btn.disabled=false;
+ }
+}
+
+async function playSession(){
+ if(!currentSession.length)return;
+ try{
+  await api("/me/player/play",{
+   method:"PUT",
+   body:JSON.stringify({uris:currentSession.map(t=>t.uri)})
+  });
+  status("¡La sesión de Rafa está sonando en Spotify!");
+  setTimeout(refresh,1500);
+ }catch(e){
+  status(e.message+" Abrí Spotify en tu Motorola y elegí el parlante como dispositivo.");
+ }
 }
 
 async function play(uri){
  try{
-  await api("/me/player/play",{method:"PUT",body:JSON.stringify({uris:[uri]})});
+  await api("/me/player/play",{
+   method:"PUT",
+   body:JSON.stringify({uris:[uri]})
+  });
   status("Solicitud enviada a Spotify.");
   setTimeout(refresh,1200);
- }catch(e){status(e.message+" Abrí Spotify en tu Motorola y elegí el parlante como dispositivo.");}
+ }catch(e){
+  status(e.message+" Abrí Spotify en tu Motorola y elegí el parlante como dispositivo.");
+ }
 }
 
 async function refresh(){
  try{
   const data=await api("/me/player/currently-playing");
   document.getElementById("now").textContent=
-   data?.item ? "Sonando: "+data.item.name+" — "+data.item.artists.map(a=>a.name).join(", ")
+   data?.item
+   ? "Sonando: "+data.item.name+" — "+data.item.artists.map(a=>a.name).join(", ")
    : "Spotify no informa una canción en reproducción.";
- }catch(e){status(e.message);}
+ }catch(e){
+  status(e.message);
+ }
 }
 
 async function pause(){
- try{await api("/me/player/pause",{method:"PUT"});status("Reproducción pausada.");}
- catch(e){status(e.message);}
+ try{
+  await api("/me/player/pause",{method:"PUT"});
+  status("Reproducción pausada.");
+ }catch(e){
+  status(e.message);
+ }
 }
 
 async function next(){
- try{await api("/me/player/next",{method:"POST"});status("Pasando a la siguiente canción.");setTimeout(refresh,1200);}
- catch(e){status(e.message);}
+ try{
+  await api("/me/player/next",{method:"POST"});
+  status("Pasando a la siguiente canción.");
+  setTimeout(refresh,1200);
+ }catch(e){
+  status(e.message);
+ }
 }
 
 document.getElementById("connect").onclick=connect;
 document.getElementById("search").onclick=search;
+document.getElementById("generate").onclick=generateSession;
+document.getElementById("playSession").onclick=playSession;
 document.getElementById("refresh").onclick=refresh;
 document.getElementById("pause").onclick=pause;
 document.getElementById("next").onclick=next;
+
 document.getElementById("logout").onclick=()=>{
  token=null;
  sessionStorage.removeItem("rafa_token");
  status("Sesión desconectada. Para revocar el acceso, hacelo también desde tu cuenta de Spotify.");
 };
+
 handleCallback();
 if(token)status("Sesión de Spotify disponible en esta pestaña.");
 </script>
 </body>
 </html>
+
