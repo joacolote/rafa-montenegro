@@ -8,100 +8,90 @@
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;padding:22px;
- background:linear-gradient(145deg,#100e13,#211725);
- color:#f8f1e8;font-family:Arial,sans-serif;
+ margin:0;background:#101018;color:#f5f2ed;
+ font-family:Arial,sans-serif;padding:22px;
 }
 main{max-width:650px;margin:auto}
-header{text-align:center;padding:28px 10px 22px}
-h1{font-size:35px;letter-spacing:3px;margin:8px 0}
-.sub{color:#d7ae79;letter-spacing:2px;font-size:12px}
-.motto{color:#c9bdc9;font-style:italic;margin-top:14px}
+h1{font-size:34px;margin-bottom:4px;letter-spacing:1px}
+h2{font-size:21px;margin-top:0}
+h3{margin-top:0}
+.sub{color:#b7a9c9}
 .card{
- background:#251e29;border:1px solid #493747;
- padding:19px;border-radius:17px;margin:17px 0;
-}
-h2{font-size:19px;margin:0 0 12px;color:#f0c48d}
-p{line-height:1.5}
-input{
- width:100%;padding:14px;border-radius:10px;
- border:1px solid #66516a;margin:10px 0;
- background:#fff;color:#111;font-size:16px;
+ background:#211e2b;padding:20px;border-radius:18px;
+ margin:18px 0;border:1px solid #393344;
 }
 button{
- border:0;border-radius:10px;padding:13px 16px;
- margin:5px 4px 5px 0;background:#d49a59;
- color:#21150e;font-weight:bold;font-size:14px;
- cursor:pointer;
+ border:0;border-radius:10px;padding:13px 17px;
+ margin:5px;background:#a77bdb;color:#15111b;
+ font-weight:bold;font-size:15px;cursor:pointer;
 }
-button.secondary{background:#493849;color:white}
+button.secondary{background:#393344;color:white}
 button:disabled{opacity:.45;cursor:default}
-#status{color:#e7bd89;line-height:1.5}
+input{
+ width:100%;padding:14px;border-radius:10px;
+ border:0;margin:10px 0;background:#fff;
+ color:#111;font-size:16px;
+}
 .track{
- padding:13px 0;border-bottom:1px solid #514052;
- display:flex;justify-content:space-between;
- align-items:center;gap:10px;
+ padding:13px 0;border-bottom:1px solid #45404f;
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;
 }
-.track-info{min-width:0;flex:1}
-.track strong{display:block;line-height:1.35}
-.track small{color:#c5b7c7}
-.track button{white-space:nowrap}
-.tag{
- display:inline-block;background:#493849;color:#f1c58e;
- border-radius:20px;padding:5px 9px;font-size:11px;
- margin:3px 0 7px;
+.track-info{min-width:0}
+.track-info strong{display:block}
+.track-info small{color:#c0b6cc}
+.stage{
+ color:#d5b7ff;font-weight:bold;margin-top:20px;
 }
-.stage{margin-top:18px}
-.stage h3{color:#e9b978;font-size:15px}
-.note{font-size:13px;color:#c7bac8}
+#status{color:#d5b7ff;line-height:1.5}
+#now{color:#e8dafa;line-height:1.5}
+.tagline{color:#d5b7ff;font-style:italic}
 </style>
 </head>
+
 <body>
 <main>
-
-<header>
  <div class="sub">FUNK · DISCO · SOUL · HOUSE</div>
  <h1>RAFA MONTENEGRO</h1>
- <div class="motto">«Si no tiene groove, no entra en la sesión».</div>
-</header>
+ <p class="tagline">«Si no tiene groove, no entra en la sesión».</p>
 
-<div class="card">
- <h2>La cabina de Rafa</h2>
- <p>Un viaje musical desde el funk clásico hasta el disco y el funky house actual. Música con bajo, ritmo y energía para bailar.</p>
- <p id="status">Conectá Spotify para empezar.</p>
- <button id="connect">Conectar con Spotify</button>
- <button id="logout" class="secondary">Desconectar</button>
-</div>
+ <div class="card">
+  <h2>La cabina de Rafa</h2>
+  <p>Un viaje musical desde el funk clásico hasta el disco y el funky house actual. Música con bajo, ritmo y energía para bailar.</p>
+  <p id="status">Conectá Spotify para empezar.</p>
+  <button id="connect">Conectar con Spotify</button>
+  <button id="logout" class="secondary">Desconectar</button>
+ </div>
 
-<div class="card">
- <h2>Crear una sesión mixta</h2>
- <p class="note">Rafa buscará canciones y construirá una sesión en cuatro etapas.</p>
- <button id="generate">Crear sesión musical</button>
- <div id="session"></div>
- <button id="playSession" disabled>Reproducir sesión completa</button>
-</div>
+ <div class="card">
+  <h2>Crear una sesión mixta</h2>
+  <p>Rafa buscará canciones y construirá una sesión en cuatro etapas.</p>
+  <button id="create">Crear sesión musical</button>
+  <button id="playSession" disabled>Reproducir sesión completa</button>
+  <div id="session"></div>
+ </div>
 
-<div class="card">
- <h2>Buscar una canción</h2>
- <input id="query" placeholder="Artista, canción o estilo musical">
- <button id="search">Buscar canciones</button>
- <div id="results"></div>
-</div>
+ <div class="card">
+  <h2>Buscar una canción</h2>
+  <input id="query" placeholder="Artista, canción o estilo musical">
+  <button id="search">Buscar canciones</button>
+  <div id="results"></div>
+ </div>
 
-<div class="card">
- <h2>Controles de Spotify</h2>
- <p id="now">Todavía no consultamos qué está sonando.</p>
- <button id="refresh" class="secondary">Ver qué suena</button>
- <button id="pause" class="secondary">Pausar</button>
- <button id="next" class="secondary">Siguiente canción</button>
-</div>
-
+ <div class="card">
+  <h2>Controles de Spotify</h2>
+  <p id="now">Todavía no consultamos qué está sonando.</p>
+  <button id="refresh" class="secondary">Ver qué suena</button>
+  <button id="pause" class="secondary">Pausar</button>
+  <button id="next" class="secondary">Siguiente canción</button>
+ </div>
 </main>
 
 <script>
 const CLIENT_ID = "92732ff5d851466bb5836748075c8e45";
 const REDIRECT_URI = "https://joacolote.github.io/rafa-montenegro/";
-const SCOPES = "user-read-playback-state user-read-currently-playing user-modify-playback-state";
+const SCOPES =
+ "user-read-playback-state user-read-currently-playing user-modify-playback-state";
 
 let token = sessionStorage.getItem("rafa_token");
 let currentSession = [];
@@ -111,68 +101,89 @@ const resultsEl = document.getElementById("results");
 const sessionEl = document.getElementById("session");
 const playSessionBtn = document.getElementById("playSession");
 
-function status(msg){statusEl.textContent=msg;}
+function status(message){
+ statusEl.textContent = message;
+}
 
 function randomString(length){
- const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
- const bytes=crypto.getRandomValues(new Uint8Array(length));
- return Array.from(bytes,b=>chars[b%chars.length]).join("");
+ const chars =
+ "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+ const bytes = crypto.getRandomValues(new Uint8Array(length));
+ return Array.from(bytes,b=>chars[b % chars.length]).join("");
 }
 
 async function challenge(verifier){
- const data=new TextEncoder().encode(verifier);
- const digest=await crypto.subtle.digest("SHA-256",data);
+ const data = new TextEncoder().encode(verifier);
+ const digest = await crypto.subtle.digest("SHA-256",data);
  return btoa(String.fromCharCode(...new Uint8Array(digest)))
- .replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  .replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 }
 
 async function connect(){
- const verifier=randomString(64);
- const state=randomString(32);
- sessionStorage.setItem("rafa_verifier",verifier);
- sessionStorage.setItem("rafa_state",state);
- const codeChallenge=await challenge(verifier);
- const url=new URL("https://accounts.spotify.com/authorize");
- url.search=new URLSearchParams({
-  client_id:CLIENT_ID,
-  response_type:"code",
-  redirect_uri:REDIRECT_URI,
-  code_challenge_method:"S256",
-  code_challenge:codeChallenge,
-  state:state,
-  scope:SCOPES
- });
- location.href=url.toString();
+ try{
+  const verifier = randomString(64);
+  const state = randomString(32);
+
+  sessionStorage.setItem("rafa_verifier",verifier);
+  sessionStorage.setItem("rafa_state",state);
+
+  const codeChallenge = await challenge(verifier);
+  const url = new URL("https://accounts.spotify.com/authorize");
+
+  url.search = new URLSearchParams({
+   client_id:CLIENT_ID,
+   response_type:"code",
+   redirect_uri:REDIRECT_URI,
+   code_challenge_method:"S256",
+   code_challenge:codeChallenge,
+   state:state,
+   scope:SCOPES
+  });
+
+  location.href = url.toString();
+ }catch(e){
+  status("No se pudo iniciar la conexión: "+e.message);
+ }
 }
 
 async function handleCallback(){
- const params=new URLSearchParams(location.search);
- const code=params.get("code");
+ const params = new URLSearchParams(location.search);
+ const code = params.get("code");
+
  if(params.get("error")){
-  status("No se autorizó el acceso a Spotify.");
+  status("Spotify no autorizó la conexión.");
   return;
  }
+
  if(!code)return;
- if(params.get("state")!==sessionStorage.getItem("rafa_state")){
+
+ if(params.get("state") !== sessionStorage.getItem("rafa_state")){
   status("Error de seguridad: estado inválido.");
   return;
  }
+
  try{
-  const body=new URLSearchParams({
+  const body = new URLSearchParams({
    client_id:CLIENT_ID,
    grant_type:"authorization_code",
    code:code,
    redirect_uri:REDIRECT_URI,
    code_verifier:sessionStorage.getItem("rafa_verifier")
   });
-  const response=await fetch("https://accounts.spotify.com/api/token",{
+
+  const response = await fetch("https://accounts.spotify.com/api/token",{
    method:"POST",
    headers:{"Content-Type":"application/x-www-form-urlencoded"},
    body
   });
-  const data=await response.json();
-  if(!response.ok)throw new Error(data.error_description||data.error||"No se pudo conectar");
-  token=data.access_token;
+
+  const data = await response.json();
+
+  if(!response.ok){
+   throw new Error(data.error_description || data.error || "No se pudo conectar");
+  }
+
+  token = data.access_token;
   sessionStorage.setItem("rafa_token",token);
   history.replaceState({},document.title,REDIRECT_URI);
   status("¡Rafa está conectado a Spotify!");
@@ -183,179 +194,243 @@ async function handleCallback(){
 
 async function api(path,options={}){
  if(!token)throw new Error("Primero conectá Spotify.");
- const response=await fetch("https://api.spotify.com/v1"+path,{
+
+ const response = await fetch("https://api.spotify.com/v1"+path,{
   ...options,
   headers:{
    Authorization:"Bearer "+token,
    "Content-Type":"application/json",
-   ...(options.headers||{})
+   ...(options.headers || {})
   }
  });
- if(response.status===204)return null;
- const data=await response.json().catch(()=>({}));
+
+ if(response.status === 204)return null;
+
+ const data = await response.json().catch(()=>({}));
+
  if(!response.ok){
-  throw new Error(data.error?.message||"Error de Spotify ("+response.status+")");
+  throw new Error(
+   data.error?.message || "Error de Spotify ("+response.status+")"
+  );
  }
+
  return data;
 }
 
-async function search(){
- const q=document.getElementById("query").value.trim();
- if(!q)return;
- resultsEl.textContent="Buscando...";
+/* Busca el dispositivo disponible para reproducir. */
+async function getPlaybackDevice(){
+ const data = await api("/me/player/devices");
+ const devices = data.devices || [];
+
+ const device =
+  devices.find(d=>d.is_active && !d.is_restricted) ||
+  devices.find(d=>!d.is_restricted);
+
+ if(!device){
+  throw new Error(
+   "Spotify no detecta un dispositivo disponible. Abrí Spotify y reproducí una canción."
+  );
+ }
+
+ return device;
+}
+
+/* Envía la canción al dispositivo seleccionado. */
+async function play(uri){
  try{
-  const data=await api("/search?"+new URLSearchParams({q,type:"track",limit:"10"}));
-  resultsEl.innerHTML="";
+  const device = await getPlaybackDevice();
+  const path = "/me/player/play?device_id="+encodeURIComponent(device.id);
+
+  await api(path,{
+   method:"PUT",
+   body:JSON.stringify({uris:[uri]})
+  });
+
+  status("Rafa envió la canción a "+device.name+".");
+  setTimeout(refresh,1500);
+ }catch(e){
+  status("No se pudo reproducir: "+e.message);
+ }
+}
+
+/* Búsqueda individual de canciones. */
+async function search(){
+ const q = document.getElementById("query").value.trim();
+ if(!q)return;
+
+ resultsEl.textContent = "Buscando...";
+
+ try{
+  const data = await api(
+   "/search?"+new URLSearchParams({q,type:"track",limit:"10"})
+  );
+
+  resultsEl.innerHTML = "";
+
   if(!data.tracks.items.length){
-   resultsEl.textContent="No encontré canciones.";
+   resultsEl.textContent = "No encontré canciones.";
    return;
   }
+
   data.tracks.items.forEach(track=>{
-   const div=document.createElement("div");
-   div.className="track";
-   const info=document.createElement("div");
-   info.className="track-info";
-   const name=document.createElement("strong");
-   name.textContent=track.name;
-   const artist=document.createElement("small");
-   artist.textContent=track.artists.map(a=>a.name).join(", ");
+   const div = document.createElement("div");
+   div.className = "track";
+
+   const info = document.createElement("div");
+   info.className = "track-info";
+
+   const name = document.createElement("strong");
+   name.textContent = track.name;
+
+   const artist = document.createElement("small");
+   artist.textContent = track.artists.map(a=>a.name).join(", ");
+
    info.append(name,artist);
-   const btn=document.createElement("button");
-   btn.textContent="Reproducir";
-   btn.onclick=()=>play(track.uri);
+
+   const btn = document.createElement("button");
+   btn.textContent = "Reproducir";
+   btn.onclick = ()=>play(track.uri);
+
    div.append(info,btn);
    resultsEl.append(div);
   });
  }catch(e){
-  resultsEl.textContent=e.message;
+  resultsEl.textContent = e.message;
  }
 }
 
-/* Selección musical de Rafa:
-   cada búsqueda aporta una canción a una etapa de la sesión. */
-const musicalJourney=[
- {stage:"1. Entrar en clima — Soul y funk",queries:[
-  "artist:Stevie Wonder",
-  "artist:Marvin Gaye",
-  "artist:James Brown"
- ]},
- {stage:"2. Que empiece el baile — Disco clásico",queries:[
-  "artist:Chic",
-  "artist:Donna Summer",
-  "artist:Earth Wind and Fire"
- ]},
- {stage:"3. Subir la energía — Disco moderno",queries:[
-  "artist:Breakbot",
-  "artist:Jamiroquai",
-  "artist:Parcels"
- ]},
- {stage:"4. Pista encendida — Nu-disco y funky house",queries:[
-  "artist:Purple Disco Machine",
-  "artist:Folamour",
-  "artist:The Shapeshifters"
- ]}
+/* Recorrido musical de Rafa en cuatro etapas. */
+const musicalJourney = [
+ {
+  stage:"1. Entrar en clima — Soul y funk",
+  queries:[
+   "artist:Stevie Wonder",
+   "artist:Marvin Gaye",
+   "artist:James Brown"
+  ]
+ },
+ {
+  stage:"2. Que empiece el baile — Disco clásico",
+  queries:[
+   "artist:Chic",
+   "artist:Donna Summer",
+   "artist:Earth Wind and Fire"
+  ]
+ },
+ {
+  stage:"3. Subir la energía — Disco moderno",
+  queries:[
+   "artist:Breakbot",
+   "artist:Jamiroquai",
+   "artist:Parcels"
+  ]
+ },
+ {
+  stage:"4. Pista encendida — Funky house",
+  queries:[
+   "artist:Purple Disco Machine",
+   "artist:Folamour",
+   "artist:The Shapeshifters"
+  ]
+ }
 ];
 
-async function generateSession(){
- if(!token){
-  status("Primero conectá Spotify.");
-  return;
- }
- const btn=document.getElementById("generate");
- btn.disabled=true;
- playSessionBtn.disabled=true;
- currentSession=[];
- sessionEl.innerHTML="<p>Rafa está buscando música y preparando la sesión...</p>";
+async function createSession(){
+ const btn = document.getElementById("create");
+ btn.disabled = true;
+ playSessionBtn.disabled = true;
+ currentSession = [];
+ sessionEl.innerHTML = "";
+ status("Rafa está preparando tu sesión musical...");
 
  try{
-  const used=new Set();
+  for(const section of musicalJourney){
+   const heading = document.createElement("div");
+   heading.className = "stage";
+   heading.textContent = section.stage;
+   sessionEl.append(heading);
 
-  for(const group of musicalJourney){
-   const section=document.createElement("section");
-   section.className="stage";
-   const heading=document.createElement("h3");
-   heading.textContent=group.stage;
-   section.append(heading);
+   for(const q of section.queries){
+    const data = await api(
+     "/search?"+new URLSearchParams({
+      q,type:"track",limit:"5"
+     })
+    );
 
-   for(const query of group.queries){
-    const data=await api("/search?"+new URLSearchParams({
-     q:query,type:"track",limit:"5"
-    }));
-    const tracks=data.tracks.items;
-    const selected=tracks.find(t=>!used.has(t.uri));
-    if(!selected)continue;
+    const track = data.tracks.items[0];
+    if(!track)continue;
 
-    used.add(selected.uri);
-    currentSession.push(selected);
+    currentSession.push(track);
 
-    const row=document.createElement("div");
-    row.className="track";
-    const info=document.createElement("div");
-    info.className="track-info";
-    const name=document.createElement("strong");
-    name.textContent=selected.name;
-    const artist=document.createElement("small");
-    artist.textContent=selected.artists.map(a=>a.name).join(", ");
+    const row = document.createElement("div");
+    row.className = "track";
+
+    const info = document.createElement("div");
+    info.className = "track-info";
+
+    const name = document.createElement("strong");
+    name.textContent = track.name;
+
+    const artist = document.createElement("small");
+    artist.textContent = track.artists.map(a=>a.name).join(", ");
+
     info.append(name,artist);
 
-    const playBtn=document.createElement("button");
-    playBtn.textContent="▶";
-    playBtn.title="Reproducir esta canción";
-    playBtn.onclick=()=>play(selected.uri);
+    const playBtn = document.createElement("button");
+    playBtn.textContent = "Reproducir";
+    playBtn.onclick = ()=>play(track.uri);
 
     row.append(info,playBtn);
-    section.append(row);
+    sessionEl.append(row);
    }
-   sessionEl.append(section);
   }
 
   if(currentSession.length){
-   playSessionBtn.disabled=false;
-   status("Sesión preparada. Rafa encontró "+currentSession.length+" canciones.");
+   playSessionBtn.disabled = false;
+   status(
+    "Sesión preparada. Rafa encontró "+
+    currentSession.length+" canciones."
+   );
   }else{
-   sessionEl.textContent="No se encontraron canciones para esta sesión.";
+   sessionEl.textContent =
+    "No se encontraron canciones para esta sesión.";
   }
  }catch(e){
   status("No se pudo completar la sesión: "+e.message);
  }finally{
-  btn.disabled=false;
+  btn.disabled = false;
  }
 }
 
 async function playSession(){
  if(!currentSession.length)return;
+
  try{
-  await api("/me/player/play",{
+  const device = await getPlaybackDevice();
+  const path = "/me/player/play?device_id="+encodeURIComponent(device.id);
+
+  await api(path,{
    method:"PUT",
-   body:JSON.stringify({uris:currentSession.map(t=>t.uri)})
+   body:JSON.stringify({
+    uris:currentSession.map(t=>t.uri)
+   })
   });
-  status("¡La sesión de Rafa está sonando en Spotify!");
+
+  status("Rafa envió la sesión a "+device.name+".");
   setTimeout(refresh,1500);
  }catch(e){
-  status(e.message+" Abrí Spotify en tu Motorola y elegí el parlante como dispositivo.");
- }
-}
-
-async function play(uri){
- try{
-  await api("/me/player/play",{
-   method:"PUT",
-   body:JSON.stringify({uris:[uri]})
-  });
-  status("Solicitud enviada a Spotify.");
-  setTimeout(refresh,1200);
- }catch(e){
-  status(e.message+" Abrí Spotify en tu Motorola y elegí el parlante como dispositivo.");
+  status("No se pudo reproducir la sesión: "+e.message);
  }
 }
 
 async function refresh(){
  try{
-  const data=await api("/me/player/currently-playing");
-  document.getElementById("now").textContent=
+  const data = await api("/me/player/currently-playing");
+  document.getElementById("now").textContent =
    data?.item
-   ? "Sonando: "+data.item.name+" — "+data.item.artists.map(a=>a.name).join(", ")
-   : "Spotify no informa una canción en reproducción.";
+    ? "Sonando: "+data.item.name+" — "+
+      data.item.artists.map(a=>a.name).join(", ")
+    : "Spotify no informa una canción en reproducción.";
  }catch(e){
   status(e.message);
  }
@@ -363,40 +438,51 @@ async function refresh(){
 
 async function pause(){
  try{
-  await api("/me/player/pause",{method:"PUT"});
+  const device = await getPlaybackDevice();
+  await api(
+   "/me/player/pause?device_id="+encodeURIComponent(device.id),
+   {method:"PUT"}
+  );
   status("Reproducción pausada.");
  }catch(e){
-  status(e.message);
+  status("No se pudo pausar: "+e.message);
  }
 }
 
 async function next(){
  try{
-  await api("/me/player/next",{method:"POST"});
+  const device = await getPlaybackDevice();
+  await api(
+   "/me/player/next?device_id="+encodeURIComponent(device.id),
+   {method:"POST"}
+  );
   status("Pasando a la siguiente canción.");
   setTimeout(refresh,1200);
  }catch(e){
-  status(e.message);
+  status("No se pudo pasar de canción: "+e.message);
  }
 }
 
-document.getElementById("connect").onclick=connect;
-document.getElementById("search").onclick=search;
-document.getElementById("generate").onclick=generateSession;
-document.getElementById("playSession").onclick=playSession;
-document.getElementById("refresh").onclick=refresh;
-document.getElementById("pause").onclick=pause;
-document.getElementById("next").onclick=next;
+/* Botones de la página. */
+document.getElementById("connect").onclick = connect;
+document.getElementById("search").onclick = search;
+document.getElementById("create").onclick = createSession;
+document.getElementById("refresh").onclick = refresh;
+document.getElementById("pause").onclick = pause;
+document.getElementById("next").onclick = next;
+playSessionBtn.onclick = playSession;
 
-document.getElementById("logout").onclick=()=>{
- token=null;
+document.getElementById("logout").onclick = ()=>{
+ token = null;
  sessionStorage.removeItem("rafa_token");
- status("Sesión desconectada. Para revocar el acceso, hacelo también desde tu cuenta de Spotify.");
+ status("Sesión desconectada. Podés volver a conectar Spotify.");
 };
 
 handleCallback();
-if(token)status("Sesión de Spotify disponible en esta pestaña.");
+
+if(token){
+ status("Sesión de Spotify disponible en esta pestaña.");
+}
 </script>
 </body>
 </html>
-
